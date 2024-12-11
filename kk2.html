@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>两颗恒星互相环绕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            width: 100%;
+            font-family: 'Arial', sans-serif;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            background: radial-gradient(circle, rgba(0, 0, 0, 1) 30%, rgba(30, 30, 50, 0.9) 70%, rgba(0, 0, 0, 1) 100%);
+        }
+
+        /* 星河背景 */
+        .galaxy-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 10%, rgba(0, 0, 0, 1) 80%);
+            z-index: -2;  /* 背景层 */
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        /* 星星效果 */
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background-color: white;
+            border-radius: 1%;
+            animation: twinkle 1s infinite ease-in-out;
+        }
+
+        /* 星星闪烁动画 */
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 15;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* 轨道和恒星容器 */
+        .orbit-container {
+            position: relative;
+            width: 500px;  /* 轨道容器的宽度 */
+            height: 500px;  /* 轨道容器的高度 */
+            animation: rotateOrbits 12s linear infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 无穷符号轨道动画 */
+        @keyframes rotateOrbits {
+            0% {
+                transform: rotate(0deg);
+            }
+            50% {
+                transform: rotate(180deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* 第一颗恒星 */
+        .sun1, .sun2 {
+            position: absolute;
+            border-radius: 80%;
+            box-shadow: 0 0 10px rgba(255, 223, 96, 0.8), 0 0 10px rgba(255, 140, 0, 0.7);
+        }
+
+        /* 第一颗橘黄色的恒星 */
+        .sun1 {
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, rgba(255, 223, 96, 1) 0%, rgba(255, 112, 45, 0.8) 50%, rgba(255, 50, 50, 0.4) 100%);
+            animation: sun1Orbit 12s infinite linear;
+        }
+
+        /* 第二颗橘黄色的恒星 */
+        .sun2 {
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, rgba(255, 223, 96, 1) 0%, rgba(255, 112, 45, 0.8) 50%, rgba(255, 50, 50, 0.4) 100%);
+            animation: sun2Orbit 12s infinite linear;
+        }
+
+        /* 第一颗恒星的轨道（模拟无穷符号的轨迹） */
+        @keyframes sun1Orbit {
+            0% {
+                transform: translate(200px, 0); /* 初始位置 */
+            }
+            25% {
+                transform: translate(100px, 100px); /* 第一段轨道 */
+            }
+            50% {
+                transform: translate(0, 200px); /* 第二段轨道 */
+            }
+            75% {
+                transform: translate(-100px, 100px); /* 第三段轨道 */
+            }
+            100% {
+                transform: translate(200px, 0); /* 回到起始位置 */
+            }
+        }
+
+        /* 第二颗恒星的轨道（模拟无穷符号的轨迹） */
+        @keyframes sun2Orbit {
+            0% {
+                transform: translate(-200px, 0); /* 初始位置 */
+            }
+            25% {
+                transform: translate(-100px, -100px); /* 第一段轨道 */
+            }
+            50% {
+                transform: translate(0, -200px); /* 第二段轨道 */
+            }
+            75% {
+                transform: translate(100px, -100px); /* 第三段轨道 */
+            }
+            100% {
+                transform: translate(-200px, 0); /* 回到起始位置 */
+            }
+        }
+
+        /* 图片和文字展示区域 */
+        .bottom-container {
+            width: 100%;
+            padding: 20px;
+            position: absolute;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;  /* 确保图片和文字展示区域在顶部 */
+        }
+
+        .image-container {
+            width: 300px;
+            height: 200px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 3px solid #fff;
+            background-color: rgba(0, 0, 0, 0.6);
+            margin-right: 20px;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            max-height: 100%;
+        }
+
+        .text-container {
+            width: 300px;
+            padding: 15px;
+            border: 3px solid #fff;
+            background-color: rgba(0, 0, 0, 0.6);
+            font-size: 18px;
+            text-align: center;
+            color: #ff9f9f;
+            font-family: 'Cursive', sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 银河背景 -->
+    <div class="galaxy-background" id="galaxyBackground"></div>
+
+    <!-- 两颗恒星围绕 -->
+    <div class="orbit-container">
+        <div class="sun1"></div>
+        <div class="sun2"></div>
+    </div>
+
+    <!-- 图片和文字展示区域 -->
+    <div class="bottom-container">
+        <div class="image-container" id="imageContainer"></div>
+        <div class="text-container" id="textContainer"></div>
+    </div>
+
+    <script>
+        // 动态生成星星
+        const galaxyBackground = document.getElementById('galaxyBackground');
+        
+        // 随机生成星星
+        const generateStars = () => {
+            // 清空之前的星星
+            galaxyBackground.innerHTML = '';
+
+            // 随机生成 300 颗星星
+            for (let i = 0; i < 3000; i++) {
+                let star = document.createElement('div');
+                star.className = 'star';
+                
+                // 随机星星的位置
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                
+                // 随机闪烁时长
+                const duration = Math.random() * 2 + 1; // 1到3秒之间
+                star.style.animationDuration = `${duration}s`;
+                
+                // 随机星星大小
+                const size = Math.random() * 2 + 1; // 星星大小在 1px 到 3px 之间
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+
+                // 添加星星到银河背景中
+                galaxyBackground.appendChild(star);
+            }
+        };
+
+        // 页面加载时生成星空
+        generateStars();
+
+        // 随机展示 GitHub 仓库中的图片
+        const imageContainer = document.getElementById('imageContainer');
+        const imageUrls = [
+             'https://github.com/ludarcy/photo/blob/main/0.gif?raw=true',
+              'https://github.com/ludarcy/photo/blob/main/16.jpeg?raw=true',
+               'https://github.com/ludarcy/photo/blob/main/18.gif?raw=true',
+               'https://github.com/ludarcy/photo/blob/main/23.gif?raw=true',
+               'https://github.com/ludarcy/photo/blob/main/30.gif?raw=true',
+               'https://github.com/ludarcy/photo/blob/main/31.jpeg?raw=true',
+                'https://github.com/ludarcy/photo/blob/main/35.gif?raw=true',
+                'https://github.com/ludarcy/photo/blob/main/46.gif?raw=true',
+                'https://github.com/ludarcy/photo/blob/main/48.gif?raw=true',
+                'https://github.com/ludarcy/photo/blob/main/55.jpg?raw=true',
+                'https://github.com/ludarcy/photo/blob/main/64.gif?raw=true',
+                'https://github.com/ludarcy/photo/blob/main/66.jpg?raw=true',
+                'https://github.com/ludarcy/photo/blob/main/70.jpeg?raw=true',
+                'https://github.com/ludarcy/photo/blob/main/83.gif?raw=true',
+                'https://github.com/ludarcy/photo/blob/main/89.jpg?raw=true',
+                'https://github.com/ludarcy/photo/blob/main/94.gif?raw=true'
+            // 可以继续添加图片路径
+        ];
+
+        // 随机选择一张图片
+        const randomImageUrl = imageUrls[Math.floor(Math.random() * imageUrls.length)];
+        const imgElement = document.createElement("img");
+        imgElement.src = randomImageUrl;
+        imageContainer.appendChild(imgElement);
+
+        // 随机展示 GitHub 仓库中的 TXT 文档中的一行文字
+        const textContainer = document.getElementById('textContainer');
+        
+        // 模拟从 GitHub TXT 文档加载
+        const textLines = [
+            "“爱是永恒的承诺。爱你宝宝。”",
+            "“你是我的星辰。爱你宝宝。”",
+            "“我将永远陪伴你。爱你宝宝。”",
+            // 继续添加文本
+        ];
+
+        // 随机选择一行文本
+        const randomText = textLines[Math.floor(Math.random() * textLines.length)];
+        textContainer.textContent = randomText;
+    </script>
+
+</body>
+</html>
+</title>
+</head>
+<body>
+
+</body>
+</html>
