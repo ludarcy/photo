@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>给宝贝的惊喜</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #ff6347;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .image-container {
+            margin-bottom: 30px;
+        }
+
+        .image {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            margin: 10px;
+        }
+
+        .quote {
+            font-size: 1.5rem;
+            color: #ff6347;
+            font-weight: bold;
+            margin: 20px 0;
+            line-height: 1.5;
+        }
+
+        .button {
+            padding: 10px 20px;
+            background-color: #ff7f7f;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+
+        .button:hover {
+            background-color: #ff4c4c;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 1rem;
+            color: #aaa;
+        }
+
+        /* 动态笑脸 */
+        .smile-face {
+            position: absolute;
+            font-size: 50px;
+            animation: moveSmile 2s infinite;
+        }
+
+        @keyframes moveSmile {
+            0% {
+                transform: translate(0, 0);
+            }
+            50% {
+                transform: translate(30px, 30px);
+            }
+            100% {
+                transform: translate(0, 0);
+            }
+        }
+
+        /* 爱情雨 */
+        .rain-heart {
+            position: absolute;
+            font-size: 30px;
+            animation: fallHeart 2s infinite;
+        }
+
+        @keyframes fallHeart {
+            0% {
+                top: -10px;
+                opacity: 1;
+            }
+            100% {
+                top: 100vh;
+                opacity: 0;
+            }
+        }
+
+        /* 爱情时钟 */
+        .clock {
+            font-size: 2rem;
+            color: #ff6347;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>给宝贝的一些惊喜</h1>
+
+        <!-- 随机加载图片 -->
+        <div class="image-container" id="image-container"></div>
+
+        <!-- 随机文本 -->
+        <div class="quote" id="quote"></div>
+
+        <!-- 显示时间 -->
+        <div class="clock" id="clock"></div>
+
+        <!-- 爱情时钟刷新按钮 -->
+        <button class="button" onclick="reloadContent()">刷新惊喜</button>
+
+<!--        &lt;!&ndash; 爱心按钮触发心形气泡 &ndash;&gt;-->
+<!--        <button class="heart-btn" onclick="createHeartBubble()">点击我，爱心气泡来啦！❤️</button>-->
+
+        <!-- 动态笑脸触发按钮 -->
+        <button class="button" onclick="createSmileFace()">点击我，笑脸出现！😊</button>
+
+        <!-- 爱情雨触发按钮 -->
+        <button class="button" onclick="startLoveRain()">点击我，开启爱情雨！🌧️</button>
+
+        <!-- 底部甜言蜜语 -->
+        <div class="footer">希望你喜欢这些小惊喜！</div>
+    </div>
+
+    <script>
+        const imageFiles = [
+            'https://github.com/ludarcy/photo/blob/main/0.gif?raw=true',
+            'https://github.com/ludarcy/photo/blob/main/16.jpeg?raw=true',
+            'https://github.com/ludarcy/photo/blob/main/18.gif?raw=true',
+            'https://github.com/ludarcy/photo/blob/main/23.gif?raw=true',
+            'https://github.com/ludarcy/photo/blob/main/30.gif?raw=true',
+            'https://github.com/ludarcy/photo/blob/main/31.jpeg?raw=true',
+            'https://github.com/ludarcy/photo/blob/main/35.gif?raw=true',
+            'https://github.com/ludarcy/photo/blob/main/46.gif?raw=true',
+            'https://github.com/ludarcy/photo/blob/main/48.gif?raw=true',
+            'https://github.com/ludarcy/photo/blob/main/55.jpg?raw=true',
+            'https://github.com/ludarcy/photo/blob/main/64.gif?raw=true',
+            'https://github.com/ludarcy/photo/blob/main/66.jpg?raw=true',
+            'https://github.com/ludarcy/photo/blob/main/70.jpeg?raw=true',
+            'https://github.com/ludarcy/photo/blob/main/83.gif?raw=true',
+            'https://github.com/ludarcy/photo/blob/main/89.jpg?raw=true',
+            'https://github.com/ludarcy/photo/blob/main/94.gif?raw=true'
+        ];
+
+        const quotes = [
+            "你是我生命中最美的意外。",
+            "每次想到你，我的心就像小鹿乱撞。",
+            "在这个世界上，我最喜欢的就是你。",
+            "每一天醒来，看到你是我最大的幸福。",
+            "爱你是我做过最好的事情。",
+            "与你一起，时间好像静止了一样。",
+            "即使是最平凡的一天，有你在身边也变得不平凡。"
+        ];
+
+        // 获取随机元素的函数
+        function getRandomElement(arr) {
+            const randomIndex = Math.floor(Math.random() * arr.length);
+            return arr[randomIndex];
+        }
+
+        // 页面加载时，随机加载图片和文本
+        function reloadContent() {
+            const imageContainer = document.getElementById('image-container');
+            const quoteContainer = document.getElementById('quote');
+
+            // 随机加载图片
+            imageContainer.innerHTML = ''; // 清空当前图片
+            const numberOfImages = Math.floor(Math.random() * 3) + 1; // 随机显示 1 到 3 张图片
+            for (let i = 0; i < numberOfImages; i++) {
+                const img = document.createElement('img');
+                img.src = getRandomElement(imageFiles);
+                img.className = 'image';
+                imageContainer.appendChild(img);
+            }
+
+            // 随机加载一行文本
+            quoteContainer.textContent = getRandomElement(quotes);
+        }
+
+        // 创建爱情时钟
+        function updateClock() {
+            const clockContainer = document.getElementById('clock');
+            const startDate = new Date("2024-10-10T00:00:00"); // 你们在一起的日期
+            const now = new Date();
+            const diff = now - startDate; // 获取时间差（毫秒）
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24)); // 转换为天数
+            clockContainer.textContent = `我们在一起已经 ${days} 天啦！`;
+        }
+
+        // 每秒钟更新时钟
+        setInterval(updateClock, 1000);
+
+        // 创建心形气泡
+        function createHeartBubble() {
+            const heartBubble = document.createElement('div');
+            heartBubble.classList.add('heart-bubble');
+            document.body.appendChild(heartBubble);
+
+            const randomX = Math.random() * window.innerWidth;
+            const randomY = Math.random() * window.innerHeight;
+            heartBubble.style.left = `${randomX}px`;
+            heartBubble.style.top = `${randomY}px`;
+
+            setTimeout(() => {
+                heartBubble.remove();
+            }, 3000);
+        }
+
+        // 创建动态笑脸
+        function createSmileFace() {
+            const smileFace = document.createElement('div');
+            smileFace.classList.add('smile-face');
+            smileFace.textContent = '😊';
+            document.body.appendChild(smileFace);
+
+            // 鼠标移动时跟随
+            document.addEventListener('mousemove', (e) => {
+                smileFace.style.left = `${e.pageX + 10}px`;
+                smileFace.style.top = `${e.pageY + 10}px`;
+            });
+
+            setTimeout(() => {
+                smileFace.remove();
+            }, 5000); // 笑脸持续 5 秒
+        }
+
+        // 开启爱情雨
+        function startLoveRain() {
+            const heart = document.createElement('div');
+            heart.classList.add('rain-heart');
+            heart.textContent = '❤️';
+            document.body.appendChild(heart);
+
+            // 随机位置
+            heart.style.left = `${Math.random() * window.innerWidth}px`;
+            setTimeout(() => {
+                heart.remove();
+            }, 2000); // 爱心飘落 2 秒后消失
+        }
+
+        // 初始化页面内容
+        reloadContent();
+    </script>
+
+</body>
+</html>
